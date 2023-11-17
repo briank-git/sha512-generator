@@ -34,6 +34,7 @@
         <p id="salt"></p>
         <p hidden id="digest-label">SHA512 digest:</p>
         <p id="digest"></p>
+        <input hidden id="copybtn" onclick="copy_to_clipboard()" type="button" value="Copy to Clipboard">
     </main>
   </body>
   <script>
@@ -89,9 +90,20 @@
       document.getElementById("salt-digest-msg").hidden = false
       document.getElementById("salt-label").hidden = false
       document.getElementById("digest-label").hidden = false
+      document.getElementById("copybtn").hidden = false
 
       document.getElementById("salt").innerText = salt
       document.getElementById("digest").innerText = hashHex
+    }
+
+    function copy_to_clipboard() {
+      const saltLabel = document.getElementById("salt-label").innerText
+      const digestLabel = document.getElementById("digest-label").innerText
+      const salt = document.getElementById("salt").innerText
+      const digest = document.getElementById("digest").innerText
+
+      navigator.clipboard.writeText(saltLabel + "\n" + salt + "\n" + digestLabel + "\n" + digest)
+
     }
 
     function init() {
