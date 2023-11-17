@@ -12,7 +12,7 @@
     <main>
         <h1>Salt and SHA512 Digest Generator</h1>  
         <p>Use this tool generate a salt and digest for creating an account on the JupyterHub instructor server.</p>
-        
+
         <p>Everything on this page is being done entirely on the client end using JavaScript. Your plaintext password is not being sent anywhere.</p>
 
         <p>We recommend creating a unique password only used for JupyterHub.</p>
@@ -24,15 +24,50 @@
           <li>At least one digit (0-9)</li>
         </ul>
         <p>Enter your password:</p>
-        <input type="password" id="pw" onkeyup="validate_pwd()" autocomplete="new-password" />
+        <input type="password" id="pw1" onkeyup="validate_pwd()" autocomplete="new-password" />
         <p>Re-enter your password:</p>
         <input type="password" id="pw2" onkeyup="validate_pwd()" />
         <p>Randomly generated salt:</p>
         <p id="salt"></p>
+        <input disabled="disabled" id="genbtn" onclick="calc_sha512()" type="button" value="Generate Digest" />
+        <p id="msg"></p>
+        <p hidden>SHA512 digest:</p>
+        <p id="digest"></p>
     </main>
   </body>
   <script>
-    // Generate 64 byte random salt returned as hex
+    function regex_check(pwd) {
+      // at least one number, one letter
+      // at least eight characters
+      var regex = /^(?=.*[A-Za-z])(?=.*[0-9])(?!.* ).{8,}$/;
+      return regex.test(pwd);
+    }
+
+    function validate_pwd() {
+      var empty =
+        (document.getElementById("pw1").value == "");
+      var match =
+        (document.getElementById("pw1").value.toString() ==
+          document.getElementById("pw2").value.toString()) && !empty && regex_check(document.getElementById("pw1").value.toString());
+
+      document.getElementById("genbtn").disabled = !match;
+
+      if (empty) {
+        document.getElementById("msg").innerText = "Enter a password to hash";
+        document.getElementById("msg").style.color = "black";
+      }
+      else if (!match) {
+        document.getElementById("msg").innerText = "Passwords do not match or are not valid";
+        document.getElementById("msg").style.color = "red";
+      }
+      else {
+        document.getElementById("msg").innerText = "Passwords match";
+        document.getElementById("msg").style.color = "green";
+      }
+
+    }
+
+    // Generate n byte random salt returned as hex
     function random_salt(bytes) {
       var result = ""
       var array = new Uint8Array(bytes)
