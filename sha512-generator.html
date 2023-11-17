@@ -11,7 +11,7 @@
   <body>
     <main>
         <h1>Salt and SHA512 Digest Generator</h1>  
-        <p>Use this tool generate a salt and digest for creating an account on the JupyterHub instructor server.</p>
+        <p>Use this tool to generate a salt and digest for creating an account on the JupyterHub instructor server.</p>
 
         <p>Everything on this page is being done entirely on the client end using JavaScript. Your plaintext password is not being sent anywhere.</p>
 
@@ -27,11 +27,12 @@
         <input type="password" id="pw1" onkeyup="validate_pwd()" autocomplete="new-password" />
         <p>Re-enter your password:</p>
         <input type="password" id="pw2" onkeyup="validate_pwd()" />
-        <p>Randomly generated salt:</p>
-        <p id="salt"></p>
         <input disabled="disabled" id="genbtn" onclick="calc_sha512()" type="button" value="Generate Digest" />
         <p id="msg"></p>
-        <p hidden>SHA512 digest:</p>
+        <h2 hidden id="salt-digest-msg">Send the following salt and digest to the course coordinator:</h2>
+        <p hidden id="salt-label">Randomly generated salt:</p>
+        <p id="salt"></p>
+        <p hidden id="digest-label">SHA512 digest:</p>
         <p id="digest"></p>
     </main>
   </body>
@@ -69,20 +70,31 @@
 
     // Generate n byte random salt returned as hex
     function random_salt(bytes) {
-      var result = ""
       var array = new Uint8Array(bytes)
-      randArray = self.crypto.getRandomValues(array)
-      randArray.map((val) => result = result + val.toString(16).padStart(2, '0'))
-      console.log(result)
-      return result
+      randArray = Array.from(self.crypto.getRandomValues(array))
+      return randArray.map((b) => b.toString(16).padStart(2, "0")).join("")
     }
 
-    function randomize_salt() {
-      document.getElementById("salt").innerText = random_salt(64)
+    // Sourced from https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest
+    async function calc_sha512() {
+      const salt = random_salt(64)
+      const saltedPwd = document.getElementById("pw1").value + salt
+      const saltedPwdUint8 = new TextEncoder().encode(saltedPwd) // utf-8 encode salted pwd
+      const hashBuffer = await crypto.subtle.digest("SHA-512", saltedPwdUint8) // hash salted pwd
+      const hashArray = Array.from(new Uint8Array(hashBuffer)); // convert buffer to byte array
+      const hashHex = hashArray
+        .map((b) => b.toString(16).padStart(2, "0"))
+        .join(""); // convert bytes to hex string
+
+      document.getElementById("salt-digest-msg").hidden = false
+      document.getElementById("salt-label").hidden = false
+      document.getElementById("digest-label").hidden = false
+
+      document.getElementById("salt").innerText = salt
+      document.getElementById("digest").innerText = hashHex
     }
 
     function init() {
-      randomize_salt()
       validate_pwd()
     }
 

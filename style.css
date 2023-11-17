@@ -3,7 +3,17 @@ body {
     padding: 2rem 2rem 2rem 2rem;
 }
 
-#salt {
+h1 {
+    color: orange;
+}
+
+#genbtn {
+    margin-top: 1.2rem;
+    display: block;
+}
+
+#salt,
+#digest {
     overflow-wrap: break-word;
     color: blue;
     max-width: 615px;
