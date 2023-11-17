@@ -1,0 +1,56 @@
+<!-- Adapted from https://www.stat.ubc.ca/apps/MD5HASH -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Salt and Digest Generator</title>
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body>
+    <main>
+        <h1>Salt and SHA512 Digest Generator</h1>  
+        <p>Use this tool generate a salt and digest for creating an account on the JupyterHub instructor server.</p>
+        
+        <p>Everything on this page is being done entirely on the client end using JavaScript. Your plaintext password is not being sent anywhere.</p>
+
+        <p>We recommend creating a unique password only used for JupyterHub.</p>
+
+        <p>Password requirements:</p>
+        <ul>
+          <li>At least 8 characters</li>
+          <li>At least one letter</li>
+          <li>At least one digit (0-9)</li>
+        </ul>
+        <p>Enter your password:</p>
+        <input type="password" id="pw" onkeyup="validate_pwd()" autocomplete="new-password" />
+        <p>Re-enter your password:</p>
+        <input type="password" id="pw2" onkeyup="validate_pwd()" />
+        <p>Randomly generated salt:</p>
+        <p id="salt"></p>
+    </main>
+  </body>
+  <script>
+    // Generate 64 byte random salt returned as hex
+    function random_salt(bytes) {
+      var result = ""
+      var array = new Uint8Array(bytes)
+      randArray = self.crypto.getRandomValues(array)
+      randArray.map((val) => result = result + val.toString(16).padStart(2, '0'))
+      console.log(result)
+      return result
+    }
+
+    function randomize_salt() {
+      document.getElementById("salt").innerText = random_salt(64)
+    }
+
+    function init() {
+      randomize_salt()
+      validate_pwd()
+    }
+
+    init()
+  </script>
+</html>

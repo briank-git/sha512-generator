@@ -1,0 +1,12 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 2rem 2rem 2rem 2rem;
+}
+
+#salt {
+    overflow-wrap: break-word;
+    color: blue;
+    max-width: 615px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+}
