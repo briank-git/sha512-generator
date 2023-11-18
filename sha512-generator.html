@@ -41,7 +41,7 @@
     function regex_check(pwd) {
       // at least one number, one letter
       // at least eight characters
-      var regex = /^(?=.*[A-Za-z])(?=.*[0-9])(?!.* ).{8,}$/;
+      var regex = /^(?=.*[A-Za-z])(?=.*[0-9]).{8,}$/;
       return regex.test(pwd);
     }
 
