@@ -1,10 +1,14 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
-    padding: 2rem 2rem 2rem 2rem;
+    padding: 2rem;
 }
 
 h1 {
     color: #f37524;
+}
+
+#msg {
+    font-style: italic;
 }
 
 #genbtn,
