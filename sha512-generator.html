@@ -27,14 +27,14 @@
         <input type="password" id="pw1" onkeyup="validate_pwd()" autocomplete="new-password" />
         <p>Re-enter your password:</p>
         <input type="password" id="pw2" onkeyup="validate_pwd()" />
-        <input disabled="disabled" id="genbtn" onclick="calc_sha512()" type="button" value="Generate Digest" />
+        <input disabled id="genbtn" onclick="calc_sha512()" type="button" value="Generate Digest" />
         <p id="msg"></p>
         <h2 hidden id="salt-digest-msg">Send the following salt and digest to the course coordinator:</h2>
         <p hidden id="salt-label">Randomly generated salt:</p>
         <p id="salt"></p>
         <p hidden id="digest-label">SHA512 digest:</p>
         <p id="digest"></p>
-        <input hidden id="copybtn" onclick="copy_to_clipboard()" type="button" value="Copy to Clipboard">
+        <input disabled id="copybtn" onclick="copy_to_clipboard()" type="button" value="Copy to Clipboard">
     </main>
   </body>
   <script>
@@ -90,7 +90,7 @@
       document.getElementById("salt-digest-msg").hidden = false
       document.getElementById("salt-label").hidden = false
       document.getElementById("digest-label").hidden = false
-      document.getElementById("copybtn").hidden = false
+      document.getElementById("copybtn").disabled = false
 
       document.getElementById("salt").innerText = salt
       document.getElementById("digest").innerText = hashHex

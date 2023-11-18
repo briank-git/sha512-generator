@@ -15,6 +15,18 @@ h1 {
     background-color: #f37524;
     border: none;
     padding: 0.5rem;
+    cursor: pointer;
+}
+
+#genbtn:disabled {
+    background-color: #8d3e0c;
+    cursor: not-allowed;
+}
+
+#copybtn:disabled {
+    background-color: #8d3e0c;
+    cursor: not-allowed;
+    display: none;
 }
 
 #genbtn:active,
